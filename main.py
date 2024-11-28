@@ -4,7 +4,6 @@ import requests
 
 BOT_TOKEN = 'REPLACE W/ UR TOKEN' #token
 
-
 intents = discord.Intents.default()
 intents.messages = True
 intents.message_content = True
@@ -40,8 +39,8 @@ async def fetch_releases():
     global target_channel_id
     if not target_channel_id:
         return
-    
-    url = "https://www.reddit.com/r/VinylReleases.json"
+
+    url = "https://www.reddit.com/r/VinylReleases/new.json"
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.3"}
 
     try:
@@ -49,27 +48,29 @@ async def fetch_releases():
         data = response.json()
         posts = data['data']['children']
 
+        posted_urls = set()
+
         for post in posts:
             post_data = post['data']
-            title = post_data.get('title', 'Unknown Title')
-            flair = post_data.get('link_flair_text', '')
             store_url = post_data.get('url', 'No URL')
 
-            if flair in ["REPRESS", "NEW RELEASE"]:
-                if " - " in title:
-                    artist = title.split(" - ")[0]
-                elif "-" in title:
-                    artist = title.split("-")[0]
-                else:
-                    artist = "Unknown Artist"
+            if store_url not in posted_urls:
+                title = post_data['title']
+                flair = post_data.get('link_flair_text', '')
 
-                message_text = f"@{artist.strip()} - {store_url}"
+                if flair in ["REPRESS", "NEW RELEASE", "RESTOCK"]:
+                    artist = title.split(" - ")[0] if " - " in title else title.split("-")[0]
+                    artist = artist.strip()
 
-                channel = client.get_channel(target_channel_id)
-                if channel:
-                    await channel.send(message_text)
+                    message_text = f"@{artist} - {store_url}"
 
+                    channel = client.get_channel(target_channel_id)
+                    if channel:
+                        await channel.send(message_text)
+
+            posted_urls.add(store_url)
     except Exception as e:
         print(f"Error fetching or sending data: {e}")
+
 
 client.run(BOT_TOKEN)
