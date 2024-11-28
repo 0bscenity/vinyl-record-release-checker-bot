@@ -19,9 +19,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    """
-    This event will listen to messages and trigger specific actions.
-    """
+
     if message.author == client.user:
         return
 
