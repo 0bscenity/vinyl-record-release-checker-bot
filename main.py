@@ -1,74 +1,72 @@
 import discord
 from discord.ext import tasks, commands
 import requests
+import json
 
-BOT_TOKEN = 'REPLACE W/ UR TOKEN' #token
+BOT_TOKEN = 'replace with your token'  # replace with your actual token
 
 intents = discord.Intents.default()
 intents.messages = True
 intents.message_content = True
 
-client = discord.Client(intents=intents)
+bot = commands.Bot(command_prefix='/', intents=intents)
 
-target_channel_id = None
+target_channel_id = 1234567890 # replace with your actual channel id
+posted_urls_file = 'posted_urls.json'
 
-@client.event
+def load_posted_urls():
+    if os.path.exists(posted_urls_file):
+        with open(posted_urls_file, 'r') as f:
+            return set(json.load(f))
+    else:
+        return set()
+
+def save_posted_urls(urls):
+    with open(posted_urls_file, 'w') as f:
+        json.dump(list(urls), f)
+
+@bot.event
 async def on_ready():
-    print(f'Logged in as {client.user}')
-    print("Bot is ready to fetch releases.")
-
-@client.event
-async def on_message(message):
-
-    if message.author == client.user:
-        return
-
-    if message.content.startswith('$start_release'):
-        global target_channel_id
-        target_channel_id = message.channel.id
-        await message.channel.send("Release tracking started in this channel.")
-        fetch_releases.start()
+    print(f'Logged in as {bot.user}')
+    print("bot is ready! 👍")
+    fetch_releases.start()
 
 @tasks.loop(minutes=5)
 async def fetch_releases():
-    """
-    Fetch and post releases every 5 minutes if a target channel is set.
-    """
-    global target_channel_id
-    if not target_channel_id:
+    channel = bot.get_channel(target_channel_id)
+    if not channel:
+        print("ERROR: target channel not found.")
         return
 
     url = "https://www.reddit.com/r/VinylReleases/new.json"
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.3"}
+    headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.1"} # one of the most common user agents
 
     try:
         response = requests.get(url, headers=headers)
+        response.raise_for_status()  # raise an exception for error HTTP status
         data = response.json()
         posts = data['data']['children']
 
-        posted_urls = set()
+        posted_urls = load_posted_urls()
 
         for post in posts:
             post_data = post['data']
+            title = post_data.get('title', 'Unknown Title').lower()
+            flair = post_data.get('link_flair_text', '')
             store_url = post_data.get('url', 'No URL')
 
-            if store_url not in posted_urls:
-                title = post_data['title']
-                flair = post_data.get('link_flair_text', '')
+            if flair in ["REPRESS", "NEW RELEASE"] and store_url not in posted_urls: # you cann add or remove flairs to be pinged for those aswell
+                artists_to_ping = ["replace", "with", "real", "artists"] # replace with real artists names in lowercase
 
-                if flair in ["REPRESS", "NEW RELEASE", "RESTOCK"]:
-                    artist = title.split(" - ")[0] if " - " in title else title.split("-")[0]
-                    artist = artist.strip()
+                for artist in artists_to_ping:
+                    if artist in title.lower():
+                        await channel.send(f"<@1234567890> New release: {title}\n{store_url}") # replace with your user ID or role ID
+                        posted_urls.add(store_url)
+                        break
 
-                    message_text = f"@{artist} - {store_url}"
+        save_posted_urls(posted_urls)
 
-                    channel = client.get_channel(target_channel_id)
-                    if channel:
-                        await channel.send(message_text)
-
-            posted_urls.add(store_url)
     except Exception as e:
         print(f"Error fetching or sending data: {e}")
 
-
-client.run(BOT_TOKEN)
+bot.run(BOT_TOKEN)
