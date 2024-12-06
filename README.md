@@ -3,7 +3,7 @@
 discord bot for new vinyl releases by scraping https://www.reddit.com/r/VinylReleases.json
 
 
-# How to use?
+# How do I use this?
 ---
 - Click the green "Code" button at the top right and click download zip
 - Extract files
@@ -13,5 +13,6 @@ discord bot for new vinyl releases by scraping https://www.reddit.com/r/VinylRel
 - Click "Reset Token"
 - Copy the new token (DO NOT LOSE IT OR U WILL HAVE TO RESET IT AGAIN)
 - Go into main.py and edit line 5 with your token
+- 
 - Run pip install -r requirements.txt
 - if on linux run ```nohup python main.py```
