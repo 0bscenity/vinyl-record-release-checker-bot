@@ -5,13 +5,13 @@ discord bot for new vinyl releases by scraping https://www.reddit.com/r/VinylRel
 
 # How to use?
 ---
-Click the green "Code" button at the top right and click download zip
-Extract files
-go to the extracted directory
-Go to https://discord.com/developers/applications/ and click new application and name it whatever u want
-Go to "Bot" in the side menu
-Click "Reset Token"
-Copy the new token (DO NOT LOSE IT OR U WILL HAVE TO RESET IT AGAIN)
-Go into main.py and edit line 5 with your token
-Run pip install -r requirements.txt
-Run main.py
+- Click the green "Code" button at the top right and click download zip
+- Extract files
+- Go to the extracted directory
+- Go to https://discord.com/developers/applications/ and click new application and name it whatever u want
+- Go to "Bot" in the side menu
+- Click "Reset Token"
+- Copy the new token (DO NOT LOSE IT OR U WILL HAVE TO RESET IT AGAIN)
+- Go into main.py and edit line 5 with your token
+- Run pip install -r requirements.txt
+- if on linux run ```nohup python main.py```
