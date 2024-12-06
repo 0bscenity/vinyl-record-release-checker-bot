@@ -1,4 +1,4 @@
-audioop-lts=<0.2.1
-discord=<2.3.2
-discord.py=<2.4.0
-requests=<2.32.3
+audioop-lts==0.2.1
+discord==2.3.2
+discord.py==2.4.0
+requests==2.32.3
