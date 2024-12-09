@@ -6,7 +6,7 @@ discord bot for new vinyl releases by scraping https://www.reddit.com/r/VinylRel
 # How do I use this?
 ---
 
-** INSTRUCTIONS NOT FINISHED YET**
+**INSTRUCTIONS NOT FINISHED YET**
 - Click the green "Code" button at the top right and click download zip
 - Extract files
 - Go to the extracted directory
