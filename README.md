@@ -17,9 +17,10 @@ discord bot for new vinyl releases by scraping https://www.reddit.com/r/VinylRel
 - Go into main.py and edit line 6 with your token
 - Right click the channel where you want the bot to run in, and right click "Copy Channnel ID". Paste the channel ID in line 14
 - Copy your user id ([click here if you dont know how](https://support.playhive.com/discord-user-id/)) and paste it in line 63
-- Replace ```"replace", "with", "real", "artists"``` with the artists you want to be pinged for
+- Replace ```"replace", "with", "real", "artists"``` with the artists you want to be pinged for on line 63
+- Replace ```"REPRESS", "NEW RELEASE", "RESTOCK"``` with the things you want to be pinged for on line 62 (you can also just leave it as it) your options are `"REPRESS", "SOLD OUT", "NEW RELEASE", "RESTOCK"`
 - Run ```pip install -r requirements.txt```
-- if on linux run ```nohup python main.py```
-- if on windows double click main.py
+- If on linux install python and run ```nohup python main.py &```
+- if on windows install python and double click main.py
 
 there are other things you can configure. they have a comment next to them in the code
