@@ -32,13 +32,13 @@ discord bot for new vinyl releases by scraping https://www.reddit.com/r/VinylRel
 - Go to "Bot" in the side menu
 - Click "Reset Token"
 - Copy the new token (DO NOT LOSE IT OR U WILL HAVE TO RESET IT AGAIN)
-- Go into main.py and edit line 6 with your token
-- Right click the channel where you want the bot to run in, and right click "Copy Channnel ID". Paste the channel ID in line 14
-- Copy your user id ([click here if you dont know how](https://support.playhive.com/discord-user-id/)) and paste it in line 63
-- Replace ```"replace", "with", "real", "artists"``` with the artists you want to be pinged for on line 63
-- Replace ```"REPRESS", "NEW RELEASE", "RESTOCK"``` with the things you want to be pinged for on line 62 (you can also just leave it as it) your options are `"REPRESS", "SOLD OUT", "NEW RELEASE", "RESTOCK"`
+- Go into config.json and put in your token with your token
+- Right click the channel where you want the bot to run in, and right click "Copy Channnel ID". Paste the channel ID in the spot for it in config.json
+- Copy your user id ([click here if you dont know how](https://support.playhive.com/discord-user-id/)) and paste it in the correct spot in config.json
+  In config, replace ```"artist1", "artist2", "artist3"``` with the artists you want to be pinged for. **YOU MUST KEEP THE COMMAS AND QUOTATION MARKS**
 - Run ```pip install -r requirements.txt```
-- If on linux install python and run ```nohup python main.py &```
+- If on linux and you want it to continue running after you close the terminal window, install python and run ```nohup python main.py &```
+- If you want it to stop you can simply double click main.py
 - if on windows install python and double click main.py
 
 there are other things you can configure. they have a comment next to them in the code
