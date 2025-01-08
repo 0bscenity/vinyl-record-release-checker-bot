@@ -20,6 +20,8 @@ discord bot for new vinyl releases by scraping https://www.reddit.com/r/VinylRel
 - Replace ```CHANGEME2CHANNEL``` in `config.ini` with your channel id
 - replace ```artist1, artist2, artist3``` in `config.ini` with the artists you want to be pinged for. you MUST include a comma in between artists
 - Copy your user id ([click here if you dont know how](https://support.playhive.com/discord-user-id/)) and replace ```1234567890``` with your user id in `config.ini`
+- Run main.exe
+- If you followed the instructions correctly, the bot should be running
 ---
 
 ## Linux/BSD(?)
