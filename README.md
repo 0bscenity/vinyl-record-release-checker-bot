@@ -7,19 +7,19 @@ discord bot for new vinyl releases by scraping https://www.reddit.com/r/VinylRel
 
 ## Windows 8/10/11
 - If you know how to edit python files you can simply follow the instructions meant for linux, but instead of running the nohup command you can just doubleclick main.py
-- If you do not know what you are doing with python, there is a precompiled exe for you to run.
-- Download release for windows
+- If you do not know what you are doing with python, there is a precompiled exe for you to run in releases.
+- Download release
 - Extract files
 - Go to the extracted directory
 - Go to https://discord.com/developers/applications/ and click new application and name it whatever you want
 - Go to "Bot" in the side menu
 - Click "Reset Token"
 - Copy the new token (DO NOT LOSE IT OR U WILL HAVE TO RESET IT AGAIN)
-- Replace ```123CHANGEME123``` with your new token (you MUST keep the ``` ' ```around the token)
+- Replace ```123CHANGEME123```  in `config.ini` with your new token (you MUST keep the ``` ' ```around the token)
 - Right click the channel where you want the bot to run in, and right click ```Copy Channnel ID```
-- Replace ```CHANGEME2CHANNEL``` with your channel id
-- replace ```artist1, artist2, artist3``` with the artists you want to be pinged for. you MUST include a comma in between artists
-- Copy your user id ([click here if you dont know how](https://support.playhive.com/discord-user-id/)) and replace ```1234567890``` with your user id
+- Replace ```CHANGEME2CHANNEL``` in `config.ini` with your channel id
+- replace ```artist1, artist2, artist3``` in `config.ini` with the artists you want to be pinged for. you MUST include a comma in between artists
+- Copy your user id ([click here if you dont know how](https://support.playhive.com/discord-user-id/)) and replace ```1234567890``` with your user id in `config.ini`
 ---
 
 ## Linux/BSD(?)
