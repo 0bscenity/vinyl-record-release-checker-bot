@@ -1,0 +1,7 @@
+{
+    "BOT_TOKEN": "your_discord_bot_token",
+    "target_channel_id": "123456789012345678",
+    "artists": ["artist1", "artist2", "artist3"],
+    "user_id": "123456789012345678"
+  }
+  

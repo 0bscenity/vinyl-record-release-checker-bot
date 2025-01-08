@@ -2,8 +2,16 @@ import discord
 from discord.ext import tasks, commands
 import requests
 import json
+import os
 
-BOT_TOKEN = 'replace with your token'  # replace with your actual token
+config_file = 'config.json' #change the name to whatever you want, but the config file must match this name
+if not os.path.exists(config_file):
+    raise FileNotFoundError(f"config file '{config_file}' not found")
+
+with open(config_file, 'r') as f:
+    config = json.load(f)
+
+BOT_TOKEN = config['BOT_TOKEN']
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -11,7 +19,7 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix='/', intents=intents)
 
-target_channel_id = 1234567890 # replace with your actual channel id
+target_channel_id = config['target_channel_id']
 posted_urls_file = 'posted_urls.json'
 
 def load_posted_urls():
@@ -39,11 +47,11 @@ async def fetch_releases():
         return
 
     url = "https://www.reddit.com/r/VinylReleases/new.json"
-    headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.1"} # one of the most common user agents
+    headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.1"} # one of the most common user agents, you can change to whatever you want
 
     try:
         response = requests.get(url, headers=headers)
-        response.raise_for_status()  # raise an exception for error HTTP status
+        response.raise_for_status()  # raise an exception for error http status
         data = response.json()
         posts = data['data']['children']
 
@@ -55,12 +63,13 @@ async def fetch_releases():
             flair = post_data.get('link_flair_text', '')
             store_url = post_data.get('url', 'No URL')
 
-            if flair in ["REPRESS", "NEW RELEASE"] and store_url not in posted_urls: # you cann add or remove flairs to be pinged for those aswell
-                artists_to_ping = ["replace", "with", "real", "artists"] # replace with real artists names in lowercase
-
+            if flair in ["REPRESS", "NEW RELEASE"] and store_url not in posted_urls: # you can add or remove flairs to be pinged for those aswell
+                artists_to_ping = [artist.lower() for artist in config["artists"]]
+                
+                user_id = config['user_id']
                 for artist in artists_to_ping:
                     if artist in title.lower():
-                        await channel.send(f"<@1234567890> New release: {title}\n{store_url}") # replace with your user ID or role ID
+                        await channel.send(f"<@{user_id}> New release: {title}\n{store_url}")
                         posted_urls.add(store_url)
                         break
 
