@@ -63,7 +63,7 @@ async def fetch_releases():
             flair = post_data.get('link_flair_text', '')
             store_url = post_data.get('url', 'No URL')
 
-            if flair in ["REPRESS", "NEW RELEASE"] and store_url not in posted_urls: # you can add or remove flairs to be pinged for those aswell
+            if flair in ["REPRESS", "NEW RELEASE"] and store_url not in posted_urls: # you can add or remove flairs to be pinged for those aswell. your options are "RESTOCK", "SOLD OUT", "NEW RELEASE", "REPRESS"
                 artists_to_ping = [artist.lower() for artist in config["artists"]]
                 
                 user_id = config['user_id']
