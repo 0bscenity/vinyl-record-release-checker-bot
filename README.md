@@ -24,8 +24,8 @@ discord bot for new vinyl releases by scraping https://www.reddit.com/r/VinylRel
 - If you followed the instructions correctly, the bot should be running
 ---
 
-## Linux/BSD(?)
-- Click the green "Code" button at the top right and click download zip
+## Python file (Linux/BSD(?)/Mac OS (w/ homebrew))
+- Go to releases and download the latest Linux release
 - Extract files
 - Go to the extracted directory
 - Go to https://discord.com/developers/applications/ and click new application and name it whatever u want
