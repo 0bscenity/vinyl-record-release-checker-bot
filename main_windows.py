@@ -1,4 +1,4 @@
-# version for windows exe, use config parser to parse ini instead of a json
+# version for windows exe, use config parser to parse ini instead of a json file
 
 import discord
 from discord.ext import tasks, commands
@@ -62,12 +62,12 @@ async def fetch_releases():
             store_url = post_data.get('url', 'No URL')
 
             if flair in ["REPRESS", "NEW RELEASE"] and store_url not in posted_urls: # you can add or remove flairs to be pinged for those aswell
-                artists_to_ping = [artist.lower() for artist in config.get("MAIN", "artists").split(",")]
+                artists_to_ping = [artist.lower() for artist in config.get("MAIN", "artists").split(",")] # converts to lowercase so its not case sensative. finds artists in the ini file
                 
                 user_id = config["MAIN"]["user_id"]
                 for artist in artists_to_ping:
                     if artist in title.lower():
-                        await channel.send(f"<@{user_id}> New release: {title}\n{store_url}") # replace with your user ID or role ID
+                        await channel.send(f"<@{user_id}> New release: {title}\n{store_url}")
                         posted_urls.add(store_url)
                         break
 
