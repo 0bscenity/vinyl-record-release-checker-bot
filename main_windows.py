@@ -1,3 +1,5 @@
+# version for windows exe, use config parser to parse ini instead of a json
+
 import discord
 from discord.ext import tasks, commands
 import requests
