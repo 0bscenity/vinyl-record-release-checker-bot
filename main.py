@@ -3,15 +3,9 @@ from discord.ext import tasks, commands
 import requests
 import json
 import os
+import ssl
 
-config_file = 'config.json' #change the name to whatever you want, but the config file must match this name
-if not os.path.exists(config_file):
-    raise FileNotFoundError(f"config file '{config_file}' not found")
-
-with open(config_file, 'r') as f:
-    config = json.load(f)
-
-BOT_TOKEN = config['BOT_TOKEN']
+BOT_TOKEN = '1234567890asdfghjkl'  # Replace with your actual token
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -19,8 +13,10 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix='/', intents=intents)
 
-target_channel_id = config['target_channel_id']
+target_channel_id = 12345678900987654321 # replace with ur real channel id
 posted_urls_file = 'posted_urls.json'
+USER_ID = 123456 # User ID to ping
+ARTISTS_TO_PING = ["replace", "with", "artists", "to", "be", "pinged", "for"]
 
 def load_posted_urls():
     if os.path.exists(posted_urls_file):
@@ -36,7 +32,7 @@ def save_posted_urls(urls):
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print("bot is ready! 👍")
+    print("Bot is ready to fetch releases.")
     fetch_releases.start()
 
 @tasks.loop(minutes=5)
@@ -47,11 +43,13 @@ async def fetch_releases():
         return
 
     url = "https://www.reddit.com/r/VinylReleases/new.json"
-    headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.1"} # one of the most common user agents, you can change to whatever you want
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" #common useragent
+    }
 
     try:
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()  # raise an exception for error http status
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
         data = response.json()
         posts = data['data']['children']
 
@@ -63,19 +61,20 @@ async def fetch_releases():
             flair = post_data.get('link_flair_text', '')
             store_url = post_data.get('url', 'No URL')
 
-            if flair in ["REPRESS", "NEW RELEASE"] and store_url not in posted_urls: # you can add or remove flairs to be pinged for those aswell. your options are "RESTOCK", "SOLD OUT", "NEW RELEASE", "REPRESS"
-                artists_to_ping = [artist.lower() for artist in config["artists"]]
-                
-                user_id = config['user_id']
-                for artist in artists_to_ping:
+            if flair in ["REPRESS", "NEW RELEASE"] and store_url not in posted_urls: #you can change these to what they have on the reddit
+                for artist in ARTISTS_TO_PING:
                     if artist in title.lower():
-                        await channel.send(f"<@{user_id}> New release: {title}\n{store_url}")
+                        await channel.send(f"<@{USER_ID}> New release: {title}\n{store_url}") #change the message if u want
                         posted_urls.add(store_url)
                         break
 
         save_posted_urls(posted_urls)
-
+#stuff below is to not quit if max timeouts or retries are reached
+    except requests.exceptions.RequestException as e:
+        print(f"Network error: {e}")
+    except json.JSONDecodeError:
+        print("Failed to decode JSON response.")
     except Exception as e:
-        print(f"Error fetching or sending data: {e}")
+        print(f"Unexpected error: {e}")
 
 bot.run(BOT_TOKEN)
