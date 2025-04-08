@@ -32,7 +32,7 @@ def save_posted_urls(urls):
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    print("Bot is ready to fetch releases.")
+    print("🤖 ready to fetch releases 🤖")
     fetch_releases.start()
 
 @tasks.loop(minutes=5)
