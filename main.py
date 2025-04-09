@@ -4,6 +4,7 @@ import requests
 import json
 import os
 import ssl
+import python-dotenv
 
 BOT_TOKEN = '1234567890asdfghjkl'  # Replace with your actual token
 
