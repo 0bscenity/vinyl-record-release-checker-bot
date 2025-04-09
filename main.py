@@ -11,8 +11,6 @@ intents = discord.Intents.default()
 intents.messages = True
 intents.message_content = True
 
-bot = commands.Bot(command_prefix='/', intents=intents)
-
 # gets config from .env
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 target_channel_id = int(os.getenv('TARGET_CHANNEL_ID'))
