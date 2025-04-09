@@ -9,5 +9,5 @@ everything that can be changed has a comment next it
 
 ---
 ## To-Do:
-- [ ] remove hard-coded variables and put them into a .env file (idk why i didnt do this from the start lol)
+- [x] remove hard-coded variables and put them into a .env file (idk why i didnt do this from the start lol)
 - [ ] rust rewrite?!?!? (really doubt ill do this cuz i need to finish learning rust first)
