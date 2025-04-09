@@ -11,7 +11,8 @@ intents = discord.Intents.default()
 intents.messages = True
 intents.message_content = True
 
-# gets config from .env
+bot = commands.Bot(command_prefix='/', intents=intents)  # no / commands but it doesnt work w/o it for some reason
+
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 target_channel_id = int(os.getenv('TARGET_CHANNEL_ID'))
 posted_urls_file = 'posted_urls.json'
