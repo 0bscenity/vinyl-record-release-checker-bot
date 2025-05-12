@@ -4,8 +4,6 @@
 discord bot for new vinyl releases by scraping https://www.reddit.com/r/VinylReleases/new.json
 you can customize the amount of time in between checks, by default i beilieve it is set to 5 minutes
 
-# REPLACE THE PLACEHOLDERS IN THE CODE OR IT WONT WORK
-
 everything that can be changed has a comment next it
 
 ---
