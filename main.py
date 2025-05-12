@@ -3,27 +3,27 @@ from discord.ext import tasks, commands
 import requests
 import json
 import os
-import ssl
+from dotenv import load_dotenv
 
-BOT_TOKEN = '1234567890asdfghjkl'  # Replace with your actual token
+load_dotenv()
 
 intents = discord.Intents.default()
 intents.messages = True
 intents.message_content = True
 
-bot = commands.Bot(command_prefix='/', intents=intents)
+bot = commands.Bot(command_prefix='/', intents=intents)  # no / commands but it doesnt work w/o it for some reason
 
-target_channel_id = 12345678900987654321 # replace with ur real channel id
+BOT_TOKEN = os.getenv('BOT_TOKEN')
+target_channel_id = int(os.getenv('TARGET_CHANNEL_ID'))
 posted_urls_file = 'posted_urls.json'
-USER_ID = 123456 # User ID to ping
-ARTISTS_TO_PING = ["replace", "with", "artists", "to", "be", "pinged", "for"]
+USER_ID = int(os.getenv('USER_ID'))
+ARTISTS_TO_PING = os.getenv('ARTISTS_TO_PING').split(',')
 
 def load_posted_urls():
     if os.path.exists(posted_urls_file):
         with open(posted_urls_file, 'r') as f:
             return set(json.load(f))
-    else:
-        return set()
+    return set()
 
 def save_posted_urls(urls):
     with open(posted_urls_file, 'w') as f:
@@ -42,17 +42,14 @@ async def fetch_releases():
         print("ERROR: target channel not found.")
         return
 
-    url = "https://www.reddit.com/r/VinylReleases/new.json"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" #common useragent
-    }
+    url = "https://www.reddit.com/r/VinylReleases/new.json?limit=100"
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.3"} # common user agent
 
     try:
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, headers=headers, timeout=10) # dont quit program if it timesout
         response.raise_for_status()
         data = response.json()
         posts = data['data']['children']
-
         posted_urls = load_posted_urls()
 
         for post in posts:
@@ -61,15 +58,15 @@ async def fetch_releases():
             flair = post_data.get('link_flair_text', '')
             store_url = post_data.get('url', 'No URL')
 
-            if flair in ["REPRESS", "NEW RELEASE"] and store_url not in posted_urls: #you can change these to what they have on the reddit
+            if flair in ["REPRESS", "NEW RELEASE"] and store_url not in posted_urls:
                 for artist in ARTISTS_TO_PING:
-                    if artist in title.lower():
-                        await channel.send(f"<@{USER_ID}> New release: {title}\n{store_url}") #change the message if u want
+                    if artist.lower() in title:
+                        await channel.send(f"<@{USER_ID}> New release: {title}\n{store_url}")
                         posted_urls.add(store_url)
                         break
 
         save_posted_urls(posted_urls)
-#stuff below is to not quit if max timeouts or retries are reached
+
     except requests.exceptions.RequestException as e:
         print(f"Network error: {e}")
     except json.JSONDecodeError:
