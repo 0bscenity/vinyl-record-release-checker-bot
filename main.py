@@ -42,7 +42,7 @@ async def fetch_releases():
         print("ERROR: target channel not found.")
         return
 
-    url = "https://www.reddit.com/r/VinylReleases/new.json"
+    url = "https://www.reddit.com/r/VinylReleases/new.json?limit=100"
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.3"} # common user agent
 
     try:
