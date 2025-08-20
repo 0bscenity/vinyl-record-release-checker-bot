@@ -17,7 +17,8 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 target_channel_id = int(os.getenv('TARGET_CHANNEL_ID'))
 posted_urls_file = 'posted_urls.json'
 USER_ID = int(os.getenv('USER_ID'))
-ARTISTS_TO_PING = os.getenv('ARTISTS_TO_PING').split(',')
+artists_raw = os.getenv("ARTISTS_TO_PING", "")
+ARTISTS_TO_PING = [a.strip().lower() for a in artists_raw.split(",") if a.strip()]
 
 def load_posted_urls():
     if os.path.exists(posted_urls_file):
